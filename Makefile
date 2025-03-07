@@ -25,6 +25,20 @@ index.html: reports/report.qmd
 	quarto render reports/qmd_example.qmd --to html --output index.html
 	mv index.html docs/index.html
 
+docs/images: docs
+	mkdir -p docs/images
+
+# Copy images into docs/images
+docs/images/horse_pop_plot_largest_sd.png: results/horse_pop_plot_largest_sd.png | docs/images
+	cp results/horse_pop_plot_largest_sd.png docs/images/
+
+docs/images/horse_pops_plot.png: results/horse_pops_plot.png | docs/images
+	cp results/horse_pops_plot.png docs/images/
+
+# Ensure images are included in the build
+all: docs/images/horse_pop_plot_largest_sd.png \
+     docs/images/horse_pops_plot.png
+
 # clean
 clean:
 	rm -rf results
