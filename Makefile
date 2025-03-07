@@ -7,6 +7,8 @@ all: results/horse_pop_plot_largest_sd.png \
 	docs/qmd_example.html \
 	docs/qmd_example.pdf \
 	docs/index.html \
+	docs/images/horse_pop_plot_largest_sd.png \
+    docs/images/horse_pops_plot.png \
 	docs/.nojekyll
 
 # generate figures and objects for report
@@ -28,6 +30,17 @@ docs/qmd_example.pdf: results reports/qmd_example.qmd docs/.nojekyll
 # create index.html as a copy of qmd_example.html
 docs/index.html: docs/qmd_example.html
 	cp docs/qmd_example.html docs/index.html
+
+# Ensure docs/images exists
+docs/images: docs
+	mkdir -p docs/images
+
+# Copy images into docs/images
+docs/images/horse_pop_plot_largest_sd.png: results/horse_pop_plot_largest_sd.png | docs/images
+	cp results/horse_pop_plot_largest_sd.png docs/images/
+
+docs/images/horse_pops_plot.png: results/horse_pops_plot.png | docs/images
+	cp results/horse_pops_plot.png docs/images/
 
 # create .nojekyll to disable Jekyll processing on GitHub Pages
 docs/.nojekyll: docs
