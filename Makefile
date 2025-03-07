@@ -20,7 +20,7 @@ docs:
 # render quarto report in HTML and PDF
 docs/qmd_example.html: results reports/qmd_example.qmd docs/.nojekyll
 	quarto render reports/qmd_example.qmd --to html
-	cp reports/qmd_example.html docs/index.html
+	# cp reports/qmd_example.html docs/index.html
 
 docs/qmd_example.pdf: results reports/qmd_example.qmd docs/.nojekyll
 	quarto render reports/qmd_example.qmd --to pdf  --output-dir="$(PWD)/docs"
