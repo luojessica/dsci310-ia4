@@ -6,7 +6,6 @@ all: results/horse_pop_plot_largest_sd.png \
 	results/horses_spread.csv \
 	docs/qmd_example.html \
 	docs/qmd_example.pdf \
-	docs/index.html \
 	docs/.nojekyll
 
 # generate figures and objects for report
@@ -20,14 +19,11 @@ docs:
 
 # render quarto report in HTML and PDF
 docs/qmd_example.html: results reports/qmd_example.qmd docs/.nojekyll
-	quarto render reports/qmd_example.qmd --to html --output-dir="$(PWD)/docs"
+	quarto render reports/qmd_example.qmd --to html
+	mv reports/qmd_example.html docs/index.html
 
 docs/qmd_example.pdf: results reports/qmd_example.qmd docs/.nojekyll
 	quarto render reports/qmd_example.qmd --to pdf  --output-dir="$(PWD)/docs"
-
-# create index.html as a copy of qmd_example.html
-docs/index.html: docs/qmd_example.html
-	cp docs/qmd_example.html docs/index.html
 
 # create .nojekyll to disable Jekyll processing on GitHub Pages
 docs/.nojekyll: docs
@@ -38,7 +34,8 @@ clean:
 	rm -rf results
 	rm -rf reports/qmd_example.html \
 		reports/qmd_example.pdf \
-		reports/qmd_example_files
+		reports/qmd_example_files \
+		reports/index.html
 	rm -rf reports/docs
 	rm -rf docs
 	rm -rf reports/docs/qmd_example.html \
