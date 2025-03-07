@@ -5,21 +5,28 @@ all: results/horse_pop_plot_largest_sd.png \
 	results/horse_pops_plot.png \
 	results/horses_spread.csv \
 	docs/qmd_example.html \
-	docs/qmd_example.pdf
-
-
+	docs/qmd_example.pdf \
+	docs/.nojekyll
 
 # generate figures and objects for report
 results/horse_pop_plot_largest_sd.png results/horse_pops_plot.png results/horses_spread.csv: source/generate_figures.R
 	Rscript source/generate_figures.R --input_dir="data/00030067-eng.csv" \
 		--out_dir="results"
 
+# ensure docs/ exists before rendering
+docs:
+	mkdir -p docs
+
 # render quarto report in HTML and PDF
-docs/qmd_example.html: results reports/qmd_example.qmd 
+docs/qmd_example.html: results reports/qmd_example.qmd docs/.nojekyll
 	quarto render reports/qmd_example.qmd --to html --output-dir="$(PWD)/docs"
 
-docs/qmd_example.pdf: results reports/qmd_example.qmd
+docs/qmd_example.pdf: results reports/qmd_example.qmd docs/.nojekyll
 	quarto render reports/qmd_example.qmd --to pdf  --output-dir="$(PWD)/docs"
+
+# create .nojekyll to disable Jekyll processing on GitHub Pages
+docs/.nojekyll: docs
+	touch docs/.nojekyll
 
 # clean
 clean:
