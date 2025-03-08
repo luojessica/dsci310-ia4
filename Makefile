@@ -4,44 +4,39 @@
 all: results/horse_pop_plot_largest_sd.png \
 	results/horse_pops_plot.png \
 	results/horses_spread.csv \
-	reports/qmd_example.html \
-	reports/qmd_example.pdf
-
-
+	docs/qmd_example.html \
+	docs/qmd_example.pdf \
+	docs/.nojekyll
 
 # generate figures and objects for report
 results/horse_pop_plot_largest_sd.png results/horse_pops_plot.png results/horses_spread.csv: source/generate_figures.R
 	Rscript source/generate_figures.R --input_dir="data/00030067-eng.csv" \
 		--out_dir="results"
 
-# render quarto report in HTML and PDF
-reports/qmd_example.html: results reports/qmd_example.qmd
-	quarto render reports/qmd_example.qmd --to html
+# ensure docs/ exists before rendering
+docs:
+	mkdir -p docs
 
-reports/qmd_example.pdf: results reports/qmd_example.qmd
+# render quarto report in HTML and PDF
+docs/qmd_example.html: results reports/qmd_example.qmd docs/.nojekyll
+	quarto render reports/qmd_example.qmd --to html
+	cp reports/qmd_example.html docs/index.html
+
+docs/qmd_example.pdf: results reports/qmd_example.qmd docs/.nojekyll
 	quarto render reports/qmd_example.qmd --to pdf
 
-index.html: reports/report.qmd
-	quarto render reports/qmd_example.qmd --to html --output index.html
-	mv index.html docs/index.html
-
-docs/images: docs
-	mkdir -p docs/images
-
-# Copy images into docs/images
-docs/images/horse_pop_plot_largest_sd.png: results/horse_pop_plot_largest_sd.png | docs/images
-	cp results/horse_pop_plot_largest_sd.png docs/images/
-
-docs/images/horse_pops_plot.png: results/horse_pops_plot.png | docs/images
-	cp results/horse_pops_plot.png docs/images/
-
-# Ensure images are included in the build
-all: docs/images/horse_pop_plot_largest_sd.png \
-     docs/images/horse_pops_plot.png
+# create .nojekyll to disable Jekyll processing on GitHub Pages
+docs/.nojekyll: docs
+	touch docs/.nojekyll
 
 # clean
 clean:
 	rm -rf results
 	rm -rf reports/qmd_example.html \
 		reports/qmd_example.pdf \
-		reports/qmd_example_files
+		reports/qmd_example_files \
+		reports/index.html
+	rm -rf reports/docs
+	rm -rf docs
+	rm -rf reports/docs/qmd_example.html \
+		reports/docs/qmd_example.pdf

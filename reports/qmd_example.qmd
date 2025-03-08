@@ -6,11 +6,10 @@ toc: true
 toc-location: body
 editor: source
 bibliography: references.bib
-execute:
-  echo: false
 ---
 
 ```{r}
+#| echo: false
 #| warning: false
 #| message: false
 library(tidyverse)
@@ -54,6 +53,7 @@ We present the standard deviations in @tbl-horses_sd.
 ```{r}
 #| label: tbl-horses_sd
 #| tbl-cap: Standard deviation of historical (1906-1972) horse populations for each Canadian province.
+#| echo: false
 #| warning: false
 #| message: false
 
