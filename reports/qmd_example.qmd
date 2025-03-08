@@ -1,15 +1,16 @@
 ---
 title: "DSCI 310: Historical Horse Population in Canada"
 author: "Tiffany Timbers & Jordan Bourak"
-format: html
-toc: true
-toc-location: body
+format:
+  html
+    toc: true
+    toc-location: body
 editor: source
 bibliography: references.bib
+echo: false
 ---
 
 ```{r}
-#| echo: false
 #| warning: false
 #| message: false
 library(tidyverse)
@@ -53,7 +54,6 @@ We present the standard deviations in @tbl-horses_sd.
 ```{r}
 #| label: tbl-horses_sd
 #| tbl-cap: Standard deviation of historical (1906-1972) horse populations for each Canadian province.
-#| echo: false
 #| warning: false
 #| message: false
 
